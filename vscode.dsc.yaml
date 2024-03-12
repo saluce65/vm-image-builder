@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
+# Reference: https://github.com/microsoft/winget-cli#building-the-client
+properties:
+  configurationVersion: 0.2.0
+  resources:
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    directives:
+      module: Microsoft.WinGet.DSC
+      description: 'Install Microsoft Visual Studio Code'
+      allowPrerelease: true
+    settings:
+      id: Microsoft.VisualStudioCode
+      source: winget
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install YAML Extension
+      allowPrerelease: true
+    settings:
+      Name: redhat.vscode-yaml
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install Azure Account Extension
+      allowPrerelease: true
+    settings:
+      Name: ms-vscode.azure-account
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install C# Extension
+      allowPrerelease: true
+    settings:
+      Name: ms-dotnettools.csharp
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install Angular Extension
+      allowPrerelease: true
+    settings:
+      Name: angular.ng-template
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install ESLint Extension
+      allowPrerelease: true
+    settings:
+      Name: dbaeumer.vscode-eslint
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install Jest Runner Extension
+      allowPrerelease: true
+    settings:
+      Name: firsttris.vscode-jest-runner
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install JSON Tools Extension
+      allowPrerelease: true
+    settings:
+      Name: eriklynd.json-tools
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install Prettier Extension
+      allowPrerelease: true
+    settings:
+      Name: esbenp.prettier-vscode
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install Todo Highlight Extension
+      allowPrerelease: true
+    settings:
+      Name: jgclark.vscode-todo-highlight
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install GitHub Copilot Extension
+      allowPrerelease: true
+    settings:
+      Name: github.copilot
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    directives:
+      description: Install GitHub Copilot Chat Extension
+      allowPrerelease: true
+    settings:
+      Name: github.copilot-chat
+      Ensure: Present
+  

@@ -1,11 +1,20 @@
 $schema: "1.0"
 name: "Shawn's Workload"
 tasks:
+  - name: powershell
+    description: "Update PowerShell 7"
+    parameters:
+      command: "iex \"& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet\""
   - name: git-clone
+    description: "Get the DevBox repository from Azure DevOps without a PAT."
     parameters:
       repositoryUrl: https://dev.azure.com/bourque/DevBox/_git/DevBox
-      directory: C:\BDS-DevBox-Customizations
-      pat: {{ado://borque}}
+      directory: C:\BDS-DevBox-Customizations-dev-azure-com-nopat
+  - name: git-clone
+    description: "Get the DevBox repository from GitHub public repo."
+    parameters:
+      repositoryUrl: https://github.com/saluce65/vm-image-builder.git
+      directory: C:\BDS-DevBox-Customizations-github
   - name: winget
     parameters:
       downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/dev-drive.yaml
@@ -19,6 +28,7 @@ tasks:
     parameters:
       downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/sandbox.dsc.yaml
       configurationFile: C:\BDS-DevBox-Customizations\config\sandbox.dsc.yaml
+      runAsUser: true
   - name: choco
     parameters:
       package: vscode
@@ -28,15 +38,18 @@ tasks:
   - name: winget
     parameters:
       package: Microsoft.Azure.StorageExplorer
+      runAsUser: true
   - name: winget
     parameters:
       package: Microsoft.AzureCLI
   - name: winget
     parameters:
       package: Microsoft.AzureDataStudio
+      runAsUser: true
   - name: winget
     parameters:
       package: Google.Chrome
+      runAsUser: true
   - name: winget 
     parameters:
       package: Microsoft.SQLServerManagementStudio
@@ -48,3 +61,4 @@ tasks:
     parameters:
       package: Axosoft.GitKraken
       runAsUser: true
+   
