@@ -1,0 +1,4 @@
+Write-Host 'AIB Customization: Generating Dev Drive'
+Write-Output "properties:`n    configurationVersion: 0.2.0`n    resources:`n        # Creates a new Dev Drive volume with Driveletter 'Z' and label 'Dev Drive 1' onto disk 0`n        - resource: Disk`n          id: DevDrive1`n          directives:`n            description: 'Format a new Dev Drive volume onto Disk 0'`n            module: StorageDsc`n            allowPrerelease: true`n          settings:`n            DiskId: '0'`n            DiskIdType: 'Number'`n            DriveLetter: 'Z'`n            FSLabel: 'Dev Drive 1'`n            DevDrive: true`n            AllowDestructive: true`n            FSFormat: 'ReFS'`n            Size: '100Gb'" | Out-File -FilePath .\\dev-drive.yaml -Encoding ASCII
+winget configure '.\\dev-drive.yaml' --accept-configuration-agreements
+Remove-Item .\\dev-drive.yaml

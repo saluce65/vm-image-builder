@@ -1,0 +1,18 @@
+properties:
+  configurationVersion: 0.2.0
+  resources:
+  - resource: Disk
+    id: DevDrive1
+    directives:
+      description: 'Format a new Dev Drive volume onto Disk 0'
+      module: StorageDsc
+      allowPrerelease: true
+    settings:
+      DiskId: '0'
+      DiskIdType: 'Number'
+      DriveLetter: 'Z'
+      FSLabel: 'Dev Drive 1'
+      DevDrive: true
+      AllowDestructive: true
+      FSFormat: 'ReFS'
+      Size: '100Gb'

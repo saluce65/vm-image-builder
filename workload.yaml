@@ -1,0 +1,50 @@
+$schema: "1.0"
+name: "Shawn's Workload"
+tasks:
+  - name: git-clone
+    parameters:
+      repositoryUrl: https://dev.azure.com/bourque/DevBox/_git/DevBox
+      directory: C:\BDS-DevBox-Customizations
+      pat: {{ado://borque}}
+  - name: winget
+    parameters:
+      downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/dev-drive.yaml
+      configurationFile: C:\BDS-DevBox-Customizations\config\dev-drive.yaml
+  - name: winget
+    parameters:
+      downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/config.dsc.yaml
+      configurationFile: C:\BDS-DevBox-Customizations\config\config.dsc.yaml
+      runAsUser: true
+  - name: winget
+    parameters:
+      downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/sandbox.dsc.yaml
+      configurationFile: C:\BDS-DevBox-Customizations\config\sandbox.dsc.yaml
+  - name: choco
+    parameters:
+      package: vscode
+  - name: choco
+    parameters:
+      package: nodejs-lts
+  - name: winget
+    parameters:
+      package: Microsoft.Azure.StorageExplorer
+  - name: winget
+    parameters:
+      package: Microsoft.AzureCLI
+  - name: winget
+    parameters:
+      package: Microsoft.AzureDataStudio
+  - name: winget
+    parameters:
+      package: Google.Chrome
+  - name: winget 
+    parameters:
+      package: Microsoft.SQLServerManagementStudio
+  - name: winget 
+    parameters:
+      package: Postman.Postman
+      runAsUser: true
+  - name: winget 
+    parameters:
+      package: Axosoft.GitKraken
+      runAsUser: true

@@ -1,0 +1,20 @@
+{
+    "properties": {
+        "roleName": "BDS Least Privilege Deployer",
+        "description": "This Bourque Logistics custom role is intended to be used by Azure Policies that use remediation for deployment of resources. It contains the minimal permissions to validate and create/update deployments.",
+        "assignableScopes": [
+            "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.Resources/deployments/write",
+                    "Microsoft.Resources/deployments/validate/action"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "properties": {
+        "roleName": "Sal - Azure Image Builder Image Definition",
+        "description": "",
+        "assignableScopes": [
+            "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/resourceGroups/devcenter"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.Compute/images/read",
+                    "Microsoft.Compute/images/write",
+                    "Microsoft.Compute/images/delete",
+                    "Microsoft.Compute/galleries/read",
+                    "Microsoft.Compute/galleries/images/read",
+                    "Microsoft.Compute/galleries/images/versions/read",
+                    "Microsoft.Compute/galleries/images/versions/write"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}

@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema
+properties:
+  configurationVersion: 0.2.0
+  resources:
+    - resource: Microsoft.Windows.Developer/DeveloperMode
+      directives:
+        description: Enable Developer Mode
+        allowPrerelease: true
+      settings:
+        Ensure: Present
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install PowerShell 7
+        allowPrerelease: true
+      settings:
+        id: Microsoft.PowerShell
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Node LTS
+        allowPrerelease: true
+      settings:
+        id: OpenJS.NodeJS.LTS
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Visual Studio Code
+        allowPrerelease: true
+      settings:
+        id: Microsoft.VisualStudioCode 
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Notepad++
+        allowPrerelease: true
+      settings:
+        id: Notepad++.Notepad++
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Google Chrome
+        allowPrerelease: true
+      settings:
+        id: Google.Chrome 
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install SSMS
+        allowPrerelease: true
+      settings:
+        id: Microsoft.SQLServerManagementStudio 
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Visual Studio Code
+        allowPrerelease: true
+      settings:
+        id: Microsoft.VisualStudioCode 
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Azure CLI
+        allowPrerelease: true
+      settings:
+        id: Microsoft.AzureCLI 
+        source: winget
+    - resource: Microsoft.WinGet.DSC/WinGetPackage
+      directive:
+        description: Install Visual Studio Code
+        allowPrerelease: true
+      settings:
+        id: Microsoft.Git 
+        source: winget
+    
+    

@@ -1,0 +1,19 @@
+{
+    "properties": {
+        "roleName": "BDS Resource Group Creator",
+        "description": "",
+        "assignableScopes": [
+            "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.Resources/subscriptions/resourceGroups/write"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}

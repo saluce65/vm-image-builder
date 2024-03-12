@@ -1,0 +1,102 @@
+{
+  "properties": {
+    "displayName": "Assign UAA RBAC role for DEVAccessReview to tagged resource groups",
+    "policyType": "Custom",
+    "mode": "All",
+    "description": "Assigns UAA RBAC role for DEVAccessReview to resource groups with tag 'DEVAccessReview'. Existing resource groups can be remediated by triggering a remediation task.",
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+          },
+          {
+            "field": "tags['DEVAccessReview']",
+            "exists": "true"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.Authorization/roleAssignments",
+          "roleDefinitionIds": [
+            "/providers/microsoft.authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9",
+            "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/providers/Microsoft.Authorization/roleDefinitions/5357792c-f3d7-48db-ae63-b300b62fd6b6"
+          ],
+          "existenceCondition": {
+            "allOf": [
+              {
+                "field": "Microsoft.Authorization/roleAssignments/roleDefinitionId",
+                "equals": "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9"
+              },
+              {
+                "field": "Microsoft.Authorization/roleAssignments/principalId",
+                "equals": "63cb81a3-f404-46d2-8d27-4cb16a29ac79"
+              }
+            ]
+          },
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "principalId": {
+                    "type": "string",
+                    "defaultValue": "63cb81a3-f404-46d2-8d27-4cb16a29ac79",
+                    "metadata": {
+                      "description": "ObjectId of an AD group (Default: DEVAccessReview)"
+                    }
+                  },
+                  "builtInRoleType": {
+                    "type": "string",
+                    "allowedValues": [
+                      "Owner",
+                      "Contributor",
+                      "Reader",
+                      "UserAccountAccess"
+                    ],
+                    "defaultValue": "UserAccountAccess",
+                    "metadata": {
+                      "description": "RBAC role definition ID (Default: UserAccountAccess)"
+                    }
+                  },
+                  "roleConditions": {
+                    "type": "string",
+                    "defaultValue": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidNotEquals {8e3af657-a8ff-443c-a75c-2fe8c4bcb635, 18d7d88d-d35e-4fb5-a5c3-7773c20a72d9, f58310d9-a9f6-439a-9e8d-f62e7b41a168})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidNotEquals {8e3af657-a8ff-443c-a75c-2fe8c4bcb635, 18d7d88d-d35e-4fb5-a5c3-7773c20a72d9, f58310d9-a9f6-439a-9e8d-f62e7b41a168}))",
+                    "metadata": {
+                      "description": "Role assignment condition (Default: 'Not allow assign Owner, UAA, or RBAC Admin')"
+                    }
+                  }
+                },
+                "variables": {
+                  "Owner": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')]",
+                  "Contributor": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                  "Reader": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')]",
+                  "UserAccountAccess": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')]"
+                },
+                "resources": [
+                  {
+                    "type": "Microsoft.Authorization/roleAssignments",
+                    "apiVersion": "2022-04-01",
+                    "name": "[guid(concat(resourceGroup().id, '/DEVAccessReview/UAA'))]",
+                    "properties": {
+                      "roleDefinitionId": "[variables(parameters('builtInRoleType'))]",
+                      "principalId": "[parameters('principalId')]",
+                      "scope": "[resourceGroup().Id]",
+                      "condition": "[parameters('roleConditions')]",
+                      "conditionVersion": "2.0"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# Inspiration from: https://github.com/lukemurraynz/AzureImageBuilder/blob/main/.pipelines/azure-pipelines.yml
+
+trigger:
+- test
+
+variables:
+  serviceconnection: 'Old Enterprise (devcenter)'
+  overwrite: false
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: ImageBuilderDeploy
+  jobs:
+  - job: ImageBuilderDeployment
+    displayName: 'Build Azure Image Builder Template'
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Build Azure Image Builder Template'
+      inputs:
+        azureSubscription: $(serviceconnection)
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          az group create --name $(ResourceGroupName) --location $(location)
+          az deployment group create `
+        
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Old Enterprise (devcenter)'
+        scriptType: 'pscore'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'echo Hello'
+        powerShellErrorActionPreference: 'continue'

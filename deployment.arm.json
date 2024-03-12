@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageTemplateName": {
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('imageTemplateName')]",
+      "type": "Microsoft.VirtualMachineImages/imageTemplates",
+      "apiVersion": "2020-02-14",
+      "location": "southcentralus",
+      "dependsOn": [],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/resourcegroups/devcenter/providers/Microsoft.ManagedIdentity/userAssignedIdentities/oeImageBuilderIdentity": {}
+        }
+      },
+      "properties": {
+        "buildTimeoutInMinutes": 120,
+        "vmProfile": {
+          "vmSize": "Standard_DS2_v2",
+          "osDiskSizeGB": 127
+        },
+        "source": {
+          "type": "PlatformImage",
+          "publisher": "MicrosoftVisualStudio",
+          "offer": "visualstudioplustools",
+          "sku": "vs-2022-ent-general-win11-m365-gen2",
+          "version": "latest"
+        },
+        "customize": [
+          {
+            "type": "PowerShell",
+            "name": "Setup Artifacts",
+            "inline": [
+              "Write-Host 'AIB Customization: Setting up artifacts directory'",
+              "New-Item -Path 'C:\\build-artifacts' -ItemType Directory"
+            ]
+          },
+          {
+            "type": "PowerShell",
+            "name": "Install Choco",
+            "inline": [
+              "Write-Host 'AIB Customization: Installing Choco'",
+              "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+              "#Write-Host 'AIB Customization: Installing VSCode via Choco'",
+              "#choco install -y vscode",
+              "Write-Host 'AIB Customization: Installing NodeJS LTS via Choco'",
+              "choco install -y nodejs-lts",
+              "#Write-Host 'AIB Customization: Installing Gitkraken via Choco'",
+              "#choco install -y gitkraken # Cannot install GitKraken, as it's installed per user",
+              "Write-Host 'AIB Customization: Installing SSMS via Choco'",
+              "choco install -y sql-server-management-studio",
+              "Write-Host 'AIB Customization: Updating PowerShell 7 via Choco'",
+              "choco upgrade -y powershell-core",
+              "Write-Host 'AIB Customization: Installing Google Chrome'",
+              "choco install -y googlechrome",
+              "Write-Host 'AIB Customization: Installing Notepad++ via Choco'",
+              "choco install -y notepadplusplus",
+              "Write-Host 'AIB Customization: Done with Choco Install'"
+            ]
+          }
+        ],
+        "distribute": [
+          {
+            "type": "SharedImage",
+            "galleryImageId": "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/resourceGroups/devcenter/providers/Microsoft.Compute/galleries/oeComputeGallery/images/oeImageDef",
+            "runOutputName": "bdsavimbuilderoutput",
+            "artifactTags": {
+              "source": "azureVmImageBuilder",
+              "baseosimg": "win11multi"
+            },
+            "replicationRegions": ["southcentralus"]
+          }
+        ]
+      }
+    }
+  ]
+}

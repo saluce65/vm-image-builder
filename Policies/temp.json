@@ -1,0 +1,23 @@
+{
+  "requests": [
+    {
+      "content": {
+        "Id": "3a4b9b15-b28c-47b9-b9e6-94de034d7706",
+        "Properties": {
+          "PrincipalId": "63cb81a3-f404-46d2-8d27-4cb16a29ac79",
+          "PrincipalType": "Group",
+          "RoleDefinitionId": "/providers/Microsoft.Authorization/roleDefinitions/18d7d88d-d35e-4fb5-a5c3-7773c20a72d9",
+          "Scope": "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a",
+          "Condition": "((!(ActionMatches{'Microsoft.Authorization/roleAssignments/write'})) OR (@Request[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidNotEquals {8e3af657-a8ff-443c-a75c-2fe8c4bcb635, 18d7d88d-d35e-4fb5-a5c3-7773c20a72d9, f58310d9-a9f6-439a-9e8d-f62e7b41a168})) AND ((!(ActionMatches{'Microsoft.Authorization/roleAssignments/delete'})) OR (@Resource[Microsoft.Authorization/roleAssignments:RoleDefinitionId] ForAnyOfAnyValues:GuidNotEquals {8e3af657-a8ff-443c-a75c-2fe8c4bcb635, 18d7d88d-d35e-4fb5-a5c3-7773c20a72d9, f58310d9-a9f6-439a-9e8d-f62e7b41a168}))",
+          "ConditionVersion": "2.0"
+        }
+      },
+      "httpMethod": "PUT",
+      "name": "d63a21b3-cad6-405c-80e9-26f0278bd025",
+      "requestHeaderDetails": {
+        "commandName": "Microsoft_Azure_AD.AddRoleAssignments.batch"
+      },
+      "url": "https://management.azure.com/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/providers/Microsoft.Authorization/roleAssignments/3a4b9b15-b28c-47b9-b9e6-94de034d7706?api-version=2020-04-01-preview"
+    }
+  ]
+}
