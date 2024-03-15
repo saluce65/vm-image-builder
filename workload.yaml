@@ -4,12 +4,8 @@ tasks:
   - name: powershell
     description: "Update PowerShell 7"
     parameters:
-      command: "iex \"& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet\""
-  - name: git-clone
-    description: "Get the DevBox repository from Azure DevOps without a PAT."
-    parameters:
-      repositoryUrl: https://dev.azure.com/bourque/DevBox/_git/DevBox
-      directory: C:\BDS-DevBox-Customizations-dev-azure-com-nopat
+      command: |
+        iex '& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet'
   - name: git-clone
     description: "Get the DevBox repository from GitHub public repo."
     parameters:
@@ -28,10 +24,20 @@ tasks:
     parameters:
       downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/sandbox.dsc.yaml
       configurationFile: C:\BDS-DevBox-Customizations\config\sandbox.dsc.yaml
-      runAsUser: true
-  - name: choco
+  - name: winget
     parameters:
-      package: vscode
+      downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/vscode.dsc.yaml
+      configurationFile: C:\BDS-DevBox-Customizations\config\vscode.dsc.yaml
+  - name: git-clone
+    description: Get the Authentication repository from Azure DevOps
+    parameters:
+      repositoryUrl: https://bourque@dev.azure.com/bourque/Authentication/_git/Authentication
+      directory: Z:\repos\Authentication
+  - name: git-clone
+    description: Get the RAILPort repository from Azure DevOps
+    parameters:
+      repositoryUrl: https://bourque@dev.azure.com/bourque/RAILPort/_git/RAILPort
+      directory: Z:\repos\RAILPort
   - name: choco
     parameters:
       package: nodejs-lts
@@ -57,8 +63,25 @@ tasks:
     parameters:
       package: Postman.Postman
       runAsUser: true
-  - name: winget 
+  - name: install-vs-extension
     parameters:
-      package: Axosoft.GitKraken
-      runAsUser: true
-   
+      marketplaceItemName: GitHub.copilotvs
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: VisualStudioExptTeam.VSGitHubCopilot
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: MadsKristensen.OpenCommandLine64
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: MadsKristensen.OpeninVisualStudioCode
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: SonarSource.SonarLintforVisualStudio2022
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: PostSharpTechnologies.PostSharp
+  - name: install-vs-extension
+    parameters:
+      marketplaceItemName: ms-dotnettools.upgradeassistant
+

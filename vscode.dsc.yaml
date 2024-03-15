@@ -4,6 +4,7 @@ properties:
   configurationVersion: 0.2.0
   resources:
   - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: vscode
     directives:
       module: Microsoft.WinGet.DSC
       description: 'Install Microsoft Visual Studio Code'
@@ -12,6 +13,8 @@ properties:
       id: Microsoft.VisualStudioCode
       source: winget
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install YAML Extension
       allowPrerelease: true
@@ -19,6 +22,8 @@ properties:
       Name: redhat.vscode-yaml
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install Azure Account Extension
       allowPrerelease: true
@@ -26,6 +31,8 @@ properties:
       Name: ms-vscode.azure-account
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install C# Extension
       allowPrerelease: true
@@ -33,6 +40,8 @@ properties:
       Name: ms-dotnettools.csharp
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install Angular Extension
       allowPrerelease: true
@@ -40,6 +49,8 @@ properties:
       Name: angular.ng-template
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install ESLint Extension
       allowPrerelease: true
@@ -47,6 +58,8 @@ properties:
       Name: dbaeumer.vscode-eslint
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install Jest Runner Extension
       allowPrerelease: true
@@ -54,6 +67,8 @@ properties:
       Name: firsttris.vscode-jest-runner
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install JSON Tools Extension
       allowPrerelease: true
@@ -61,6 +76,8 @@ properties:
       Name: eriklynd.json-tools
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install Prettier Extension
       allowPrerelease: true
@@ -68,6 +85,8 @@ properties:
       Name: esbenp.prettier-vscode
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install Todo Highlight Extension
       allowPrerelease: true
@@ -75,6 +94,8 @@ properties:
       Name: jgclark.vscode-todo-highlight
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install GitHub Copilot Extension
       allowPrerelease: true
@@ -82,10 +103,47 @@ properties:
       Name: github.copilot
       Ensure: Present
   - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
     directives:
       description: Install GitHub Copilot Chat Extension
       allowPrerelease: true
     settings:
       Name: github.copilot-chat
       Ensure: Present
-  
+  - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
+    directives:
+      description: Install SonarLint
+      allowPrerelease: true
+    settings:
+      Name: SonarSource.sonarlint-vscode
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
+    directives:
+      description: Install Restart TS Server Button
+      allowPrerelease: true
+    settings:
+      Name: qcz.restart-ts-server-button
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
+    directives:
+      description: Install GitLens
+      allowPrerelease: true
+    settings:
+      Name: eamodio.gitlens
+      Ensure: Present
+  - resource: vscode/VSCodeExtension
+    dependsOn:
+    - vscode
+    directives:
+      description: Install Git History Diff
+      allowPrerelease: true
+    settings:
+      Name: huizhou.githd
+      Ensure: Present
