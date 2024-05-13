@@ -17,7 +17,7 @@
       "identity": {
         "type": "UserAssigned",
         "userAssignedIdentities": {
-          "/subscriptions/528afee7-e7f1-438d-84b5-67f457d1841a/resourcegroups/devcenter/providers/Microsoft.ManagedIdentity/userAssignedIdentities/oeImageBuilderIdentity": {}
+          "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/bds-imagebuilder-identity": {}
         }
       },
       "properties": {

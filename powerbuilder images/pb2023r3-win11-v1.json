@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageTemplateName": {
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('imageTemplateName')]",
+      "type": "Microsoft.VirtualMachineImages/imageTemplates",
+      "apiVersion": "2020-02-14",
+      "location": "southcentralus",
+      "dependsOn": [],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/bds-imagebuilder-identity": {}
+        }
+      },
+      "properties": {
+        "buildTimeoutInMinutes": 120,
+        "vmProfile": {
+          "vmSize": "Standard_DS2_v2",
+          "osDiskSizeGB": 127
+        },
+        "source": {
+          "type": "PlatformImage",
+          "publisher": "MicrosoftVisualStudio",
+          "offer": "visualstudioplustools",
+          "sku": "vs-2022-ent-general-win11-m365-gen2",
+          "version": "latest"
+        },
+        "customize": [
+          {
+            "type": "PowerShell",
+            "name": "Install PowerBuilder",
+            "runelevated": true,
+            "scriptUri": "https://bdsimagebuilder.blob.core.windows.net/scripts/install-powerbuilder-2022r3.ps1"
+          }
+        ],
+        "distribute": [
+          {
+            "type": "SharedImage",
+            "galleryImageId": "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.Compute/galleries/bdsimagegallery/images/PowerBuilder2022r3-Windows11",
+            "runOutputName": "bdsavimbuilderoutput",
+            "artifactTags": {
+              "source": "azureVmImageBuilder",
+              "baseosimg": "win11multi"
+            },
+            "replicationRegions": ["southcentralus"]
+          }
+        ]
+      }
+    }
+  ]
+}

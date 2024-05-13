@@ -1,11 +1,11 @@
 $schema: "1.0"
 name: "Shawn's Workload"
 tasks:
-  - name: powershell
-    description: "Update PowerShell 7"
-    parameters:
-      command: |
-        iex '& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet'
+  # - name: powershell
+  #   description: "Update PowerShell 7"
+  #   parameters:
+  #     command: |
+  #       iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Quiet"
   - name: git-clone
     description: "Get the DevBox repository from GitHub public repo."
     parameters:
@@ -24,23 +24,18 @@ tasks:
     parameters:
       downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/sandbox.dsc.yaml
       configurationFile: C:\BDS-DevBox-Customizations\config\sandbox.dsc.yaml
+  - name: choco
+    parameters:
+      package: nodejs-lts
+      version: "14.15.5"
+  - name: winget
+    parameters:
+      package: Microsoft.VisualStudioCode
   - name: winget
     parameters:
       downloadUrl: https://raw.githubusercontent.com/saluce65/vm-image-builder/main/vscode.dsc.yaml
       configurationFile: C:\BDS-DevBox-Customizations\config\vscode.dsc.yaml
-  - name: git-clone
-    description: Get the Authentication repository from Azure DevOps
-    parameters:
-      repositoryUrl: https://bourque@dev.azure.com/bourque/Authentication/_git/Authentication
-      directory: Z:\repos\Authentication
-  - name: git-clone
-    description: Get the RAILPort repository from Azure DevOps
-    parameters:
-      repositoryUrl: https://bourque@dev.azure.com/bourque/RAILPort/_git/RAILPort
-      directory: Z:\repos\RAILPort
-  - name: choco
-    parameters:
-      package: nodejs-lts
+      runAsUser: true
   - name: winget
     parameters:
       package: Microsoft.Azure.StorageExplorer
@@ -78,9 +73,9 @@ tasks:
   - name: install-vs-extension
     parameters:
       marketplaceItemName: SonarSource.SonarLintforVisualStudio2022
-  - name: install-vs-extension
-    parameters:
-      marketplaceItemName: PostSharpTechnologies.PostSharp
+  # - name: install-vs-extension
+  #   parameters:
+  #     marketplaceItemName: PostSharpTechnologies.PostSharp
   - name: install-vs-extension
     parameters:
       marketplaceItemName: ms-dotnettools.upgradeassistant

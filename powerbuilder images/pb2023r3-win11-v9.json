@@ -1,0 +1,122 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "imageTemplateName": {
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('imageTemplateName')]",
+      "type": "Microsoft.VirtualMachineImages/imageTemplates",
+      "apiVersion": "2021-10-01",
+      "location": "southcentralus",
+      "dependsOn": [],
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/bds-imagebuilder-identity": {}
+        }
+      },
+      "properties": {
+        "buildTimeoutInMinutes": 60,
+        "vmProfile": {
+          "vmSize": "Standard_DS2_v2",
+          "osDiskSizeGB": 127,
+          "userAssignedIdentities": [
+            "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/bds-imagebuilder-identity"
+          ]
+        },
+        "source": {
+          "type": "PlatformImage",
+          "publisher": "MicrosoftVisualStudio",
+          "offer": "visualstudioplustools",
+          "sku": "vs-2022-ent-general-win11-m365-gen2",
+          "version": "latest"
+        },
+        "customize": [
+          // {
+          //   "type": "PowerShell",
+          //   "name": "Install Choco",
+          //   "inline": [
+          //     "Write-Host 'AIB Customization: Installing Choco'",
+          //     "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+          //     "#Write-Host 'AIB Customization: Installing VSCode via Choco'",
+          //     "#choco install -y vscode",
+          //     "Write-Host 'AIB Customization: Installing NodeJS LTS via Choco'",
+          //     "choco install -y nodejs-lts",
+          //     "Write-Host 'AIB Customization: Installing Azure CLI via Choco'",
+          //     "choco install -y azure-cli",
+          //     "Write-Host 'AIB Customization: Done with Choco Install'"
+          //   ]
+          // },
+          {
+            "type": "PowerShell",
+            "name": "Install PowerBuilder Inline",
+            "inline": [
+              "Write-Host 'AIB Customization: Begin installation of PowerBuilder'",
+
+              "Write-Host 'AIB Customization: Set variables'",
+              "Set-Variable -Name 'source' -Value 'https://bdsimagebuilder.blob.core.windows.net/powerbuilder'",
+              "Set-Variable -Name 'filename' -Value 'PowerBuilder-2022 R3-3356-EN-MR'",
+              "Set-Variable -Name 'zipFile' -Value '$filename.zip'",
+              "Set-Variable -Name 'path' -Value 'C:\\devbox-customizations\\powerbuilder'",
+
+              "Write-Host 'AIB Customization: Get Access Token'",
+              "$response = Invoke-RestMethod 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fbdsimagebuilder.blob.core.windows.net%2F' -Headers @{Metadata=\"true\"}",
+              "$content =$response.Content | ConvertFrom-Json",
+              "$access_token = $content.access_token",
+              "echo $access_token",
+              "Write-Host 'AIB Customization: Access token is $access_token'",
+
+              "Write-Host 'AIB Customization: Download file'",
+              "New-Item -ItemType Directory -Force -Path $path",
+              "Invoke-RestMethod $source/$zipFile -OutFile $path\\$zipFile -Headers @{ Authorization =\"Bearer $access_token\"}",
+
+              "Write-Host 'AIB Customization: Unzip file'",
+              "Expand-Archive -Path $path\\$zipFile -DestinationPath $path -Force"
+            ]
+          },
+          {
+            "type": "PowerShell",
+            "name": "Install PowerBuilder Inline",
+            "runElevated": true,
+            "runAsSystem": true,
+            "inline": [
+              "Write-Host 'AIB Customization: Continue installation of PowerBuilder'",
+              "Write-Host 'AIB Customization: Set variables'",
+              "Set-Variable -Name 'source' -Value 'https://bdsimagebuilder.blob.core.windows.net/powerbuilder'",
+              "Set-Variable -Name 'filename' -Value 'PowerBuilder-2022 R3-3356-EN-MR'",
+              "Set-Variable -Name 'zipFile' -Value '$filename.zip'",
+              "Set-Variable -Name 'path' -Value 'C:\\devbox-customizations\\powerbuilder'",
+              "# Run installer",
+              "Write-Host 'AIB Customization: Agree to license'",
+              "$env:AgreeToAppeonLicense='true'",
+              "Push-Location -Path $path\\$filename",
+              "Write-Host 'AIB Customization: Run PowerBuilder installer'",
+              "./silentinstall.bat",
+              "# Clean up",
+              "Write-Host 'AIB Customization: Cleanup PowerBuilder install files'",
+              "Pop-Location",
+              "Remove-Item -Path $path -Recurse -Force"
+            ]
+          }
+        ],
+        "distribute": [
+          {
+            "type": "SharedImage",
+            "galleryImageId": "/subscriptions/29aa7d6e-5e5d-456a-943b-d3ff3927c394/resourceGroups/ImageBuilderRG/providers/Microsoft.Compute/galleries/bdsimagegallery/images/PowerBuilder2022r3-Windows11",
+            "runOutputName": "bdsavimbuilderoutput",
+            "artifactTags": {
+              "source": "azureVmImageBuilder",
+              "baseosimg": "win11multi"
+            },
+            "replicationRegions": ["southcentralus"]
+          }
+        ]
+      }
+    }
+  ]
+}
